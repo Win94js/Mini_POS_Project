@@ -9,7 +9,7 @@
 
     const app = express();
     app.use(cors({
-        origin: "https://mini-pos-project-kdyf-554uoodku-win-94s-projects.vercel.app"
+        origin: ["http://localhost:3000", "https://mini-pos-project-kdyf-554uoodku-win-94s-projects.vercel.app"]
     }))
     app.use(express.json());
 
