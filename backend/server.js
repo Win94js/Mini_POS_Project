@@ -8,9 +8,27 @@
     dotenv.config({ path: `.env.${env}` });
 
     const app = express();
+    const allowedOrigins = [
+        "http://localhost:3000", // local frontend
+        "https://mini-pos-project-kdyf.vercel.app", // your deployed frontend
+        "https://mini-pos-project-kdyf-554uoodku-win-94s-projects.vercel.app" // optional / previous URL
+    ];
+
     app.use(cors({
-        origin: ["http://localhost:3000", "https://mini-pos-project-kdyf-554uoodku-win-94s-projects.vercel.app"]
-    }))
+        origin: function(origin, callback) {
+            // allow requests with no origin (like Postman or curl)
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.indexOf(origin) === -1) {
+                const msg = `CORS error: origin ${origin} is not allowed.`;
+                return callback(new Error(msg), false);
+            }
+
+            return callback(null, true);
+        },
+        credentials: true // allows cookies, JWT, etc.
+    }));
+
     app.use(express.json());
 
 
